@@ -40,8 +40,7 @@
 										<div class="row">
 											<h1>Paginas do sistema em desevolvimento!</h1>
 											
-											<p> Esse é o meu primeiro documento em HTMLl!!
-											e eu estou muito feliz com isso</p>
+											<p>Esse é o meu primeiro documento em HTMLl!</p>
 										</div>
 									</div>
 									<!-- Page-body end -->

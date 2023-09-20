@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -147,6 +148,13 @@
 
 	<script type="text/javascript">
 	
+		function verEditar(id) {
+			var urlAction = document.getElementById('formUser').action;
+			// Redirecionamento de pagina com Java Script
+			window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+		}
+	
+	
 		function buscarUsuario() {
 			var nomeBusca = document.getElementById('nomeBusca').value;
 			// Validando que tem que ter valor pra bucar no banco.
@@ -167,7 +175,7 @@
 
 						for(var p = 0; p < json.length; p++) {
 							$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+
-								json[p].nome+'</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');
+								json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+');" type="button" class="btn btn-info">Ver</button></td></tr>');
 						}
 						
 						document.getElementById('totalResultado').textContent = 'resultados: ' + json.length;
