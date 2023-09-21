@@ -53,7 +53,6 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 					
 				ObjectMapper mapper = new ObjectMapper();
 			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
-//			    String json = mapper.writeValueAsString(dadosJsonUser);
 			    
 				 response.getWriter().write(json);
 			}else {
