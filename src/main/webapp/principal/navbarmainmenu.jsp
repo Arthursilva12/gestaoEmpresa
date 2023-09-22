@@ -50,7 +50,11 @@
 			</a>
 				<ul class="pcoded-submenu">
 					<li class=" ">
+<<<<<<< HEAD
 						<a href="<%=request.getContextPath()%>/ServletLoginUsuarioControler?acao=listarUser" class="waves-effect waves-dark"> 
+=======
+						<a href="<%=request.getContextPath()%>/principal/usuario.jsp?acao=listarUser" class="waves-effect waves-dark"> 
+>>>>>>> 0d5d6252115c9725f597825aeb4748045007806d
 							<span class="pcoded-micon"><i class="ti-angle-right"></i></span> 
 							<span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Usuário</span> 
 							<span class="pcoded-mcaret"></span>

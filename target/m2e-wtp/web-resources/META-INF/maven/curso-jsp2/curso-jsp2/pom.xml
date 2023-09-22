@@ -18,6 +18,22 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.8</version>
 		</dependency>
+<<<<<<< HEAD
+=======
+		
+		
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>jstl-api</artifactId>
+			<version>1.2</version>
+		</dependency>
+>>>>>>> 0d5d6252115c9725f597825aeb4748045007806d
 
 		<dependency>
 			<groupId>org.glassfish.web</groupId>

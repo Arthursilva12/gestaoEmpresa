@@ -1,6 +1,7 @@
 package servelets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,12 +9,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
+<<<<<<< HEAD
 
+=======
+@WebServlet(urlPatterns = {"/ServletLoginUsuarioControler", "/principal/usuario.jsp"})
+>>>>>>> 0d5d6252115c9725f597825aeb4748045007806d
 public class ServletLoginUsuarioControler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,12 +33,12 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 		
 		try {
 			String acao = request.getParameter("acao");
-			
-			if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
-				
+
+			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
 				String idUSer = request.getParameter("id");
-				
+
 				daoUsuarioRepository.deletarUser(idUSer);
+<<<<<<< HEAD
 				
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
 				 request.setAttribute("modelLogins", modelLogins);
@@ -42,22 +48,34 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 			} 
 			
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
+=======
+
+				request.setAttribute("msg", "Usuario excluido!");
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+>>>>>>> 0d5d6252115c9725f597825aeb4748045007806d
 				
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
 				String idUSer = request.getParameter("id");
-				
-				 daoUsuarioRepository.deletarUser(idUSer);
-				 
+
+				daoUsuarioRepository.deletarUser(idUSer);
+
 				response.getWriter().write("Excluido com sucesso");
+<<<<<<< HEAD
 			}
 			
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 					
+=======
+				
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
+>>>>>>> 0d5d6252115c9725f597825aeb4748045007806d
 				String nomeBusca = request.getParameter("nomeBusca");
 				System.out.println(nomeBusca);
-				
+
 				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultarUserAjax(nomeBusca);
-					
+
 				ObjectMapper mapper = new ObjectMapper();
+<<<<<<< HEAD
 			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
 			    
 				 response.getWriter().write(json);
@@ -85,10 +103,39 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 			} else {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
 				request.setAttribute("modelLogins", modelLogins);
+=======
+				String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
+
+				response.getWriter().write(json);
+				
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+				String id = request.getParameter("id");
+
+				ModelLogin modelLogin = daoUsuarioRepository.consultarUsuarioID(id);
+
+				request.setAttribute("msg", "Usuario em edição");
+				request.setAttribute("modelLogin", modelLogin);// Retorna os valores para tela
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+				/*
+				 * Tem que terminar o metodo de listar usuarios
+				 */
+				ModelLogin modelLogin = daoUsuarioRepository.consultarUsuarioList();
+				
+				List<ModelLogin> UserList = new ArrayList<>();
+				UserList.add(modelLogin);
+				
+				request.setAttribute("msg", "Usuarios carregados");
+				request.setAttribute("modelLogins", UserList);// Retorna os valores para tela
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			}else {
+
+>>>>>>> 0d5d6252115c9725f597825aeb4748045007806d
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
