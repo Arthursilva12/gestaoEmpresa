@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
+
 public class ServletLoginUsuarioControler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,9 +34,13 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 				
 				daoUsuarioRepository.deletarUser(idUSer);
 				
-				request.setAttribute("msg", "Usuario excluido!");
+				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				 request.setAttribute("modelLogins", modelLogins);
+				
+				request.setAttribute("msg", "Usuario excluido com sucesso!");
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			} 
+			
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
 				
 				String idUSer = request.getParameter("id");
@@ -44,6 +49,7 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 				 
 				response.getWriter().write("Excluido com sucesso");
 			}
+			
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 					
 				String nomeBusca = request.getParameter("nomeBusca");
@@ -55,7 +61,30 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
 			    
 				 response.getWriter().write(json);
-			}else {
+			} 
+			
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+				String id = request.getParameter("id");
+
+				ModelLogin modelLogin = daoUsuarioRepository.consultarUsuarioID(id);
+				
+				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				 request.setAttribute("modelLogins", modelLogins);
+				
+				request.setAttribute("msg", "Usuario em edição");
+				request.setAttribute("modelLogin", modelLogin);// Retorna os valores para tela
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			}
+			
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				 
+				 request.setAttribute("msg", "Usuários carregados");
+			     request.setAttribute("modelLogins", modelLogins);
+				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			} else {
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			
@@ -106,6 +135,8 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
 			}
 			
+			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+			request.setAttribute("modelLogins", modelLogins);
 			request.setAttribute("msg", msg);
 			request.setAttribute("modelLogin", modelLogin);// Retorna os valores para tela
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);

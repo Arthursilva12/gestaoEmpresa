@@ -45,7 +45,7 @@ public class DAOUsuarioRepository {
 			connection.commit();
 		}
 		
-		return this.consultaUsuario(objeto.getLogin());
+		return this.consultaUsuarioList(objeto.getLogin());
 	}
 
 	
@@ -73,27 +73,71 @@ public class DAOUsuarioRepository {
 	}
 	
 	
-	public ModelLogin consultaUsuario(String login) throws Exception {
+	public List<ModelLogin> consultaUsuarioList() throws Exception {
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
+		String sql = "select * from model_login ";
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		ResultSet resultado = statement.executeQuery();
+
+		while (resultado.next()) { /*percorrer as linhas de resultado do SQL*/
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setLogin(resultado.getString("login"));
+
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+	
+	
+	public ModelLogin consultaUsuarioList(String login) throws Exception {
+		
 		ModelLogin modelLogin = new ModelLogin();
-
+		
 		String sql = "select * from model_login where upper(login) = upper('"+ login+"')";
-
+		
 		PreparedStatement statement = connection.prepareStatement(sql);
 		// seta os valores dentro da variavel que foi pego no banco.
 		ResultSet resultado = statement.executeQuery();
-
+		
 		while (resultado.next()) { // Percorre o objeto
 			modelLogin.setId(resultado.getLong("id"));
 			modelLogin.setNome(resultado.getString("nome"));
 			modelLogin.setEmail(resultado.getString("email"));
 			modelLogin.setLogin(resultado.getString("login"));
 			modelLogin.setSenha(resultado.getString("senha"));
-
+			
 		}
-
+		
 		return modelLogin;
 	}
+	
+	public ModelLogin consultarUsuarioID(String id) throws Exception {
+		ModelLogin modelLogin = new ModelLogin();
+		
+		String sql = "select * from model_login where id = ?";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, Long.parseLong(id));
+		
+		ResultSet resultado = statement.executeQuery();
+		while (resultado.next()) { 
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setSenha(resultado.getString("senha"));
+		}
+		
+		return modelLogin;
+	}
+	
+	
 	
 
 	public boolean validarLogin(ModelLogin login) throws Exception {

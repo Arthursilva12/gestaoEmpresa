@@ -2,8 +2,11 @@
 	pageEncoding="ISO-8859-1"%>
 
 
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
+
 
 <jsp:include page="head.jsp"></jsp:include>
 
@@ -89,7 +92,27 @@
 										</div>
 
 										<span id="msg">${msg}</span>
-
+										
+										<div style="height: 300px; overflow: scroll;">
+											<table class="table" id="tabelaresultadosviw">
+												<thead>
+													<tr>
+														<th scope="col">ID</th>
+														<th scope="col">Nome</th>
+														<th scope="col">Ver</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items='${modelLogins}' var='ml'>
+														<tr>
+															<td><c:out value="${ml.id}"></c:out></td>
+															<td><c:out value="${ml.nome}"></c:out></td>
+															<td><a class="btn btn-success" href="<%=request.getContextPath()%>/ServletLoginUsuarioControler?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+														</tr>
+													</c:forEach>														
+												</tbody>
+											</table>
+										</div>
 									</div>
 									<!-- Page-body end -->
 								</div>
@@ -147,6 +170,13 @@
 
 	<script type="text/javascript">
 	
+		function verEditar(id) {
+			var urlAction = document.getElementById('formUser').action;
+			// Redirecionamento de pagina com Java Script
+			window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+		}
+	
+	
 		function buscarUsuario() {
 			var nomeBusca = document.getElementById('nomeBusca').value;
 			// Validando que tem que ter valor pra bucar no banco.
@@ -164,10 +194,10 @@
 						console.log(json);
 						
 						$('#tabelaresultados > tbody > tr').remove();
-
+	
 						for(var p = 0; p < json.length; p++) {
 							$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+
-								json[p].nome+'</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');
+								json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+');" type="button" class="btn btn-info">Ver</button></td></tr>');
 						}
 						
 						document.getElementById('totalResultado').textContent = 'resultados: ' + json.length;
