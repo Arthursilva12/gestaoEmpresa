@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
-
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
 
