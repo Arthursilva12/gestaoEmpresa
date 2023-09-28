@@ -1,10 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
+<<<<<<< HEAD
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+=======
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+>>>>>>> dev
 
 <!DOCTYPE html>
 <html lang="en">
+
 
 <jsp:include page="head.jsp"></jsp:include>
 
@@ -92,7 +99,11 @@
 										<span id="msg">${msg}</span>
 										
 										<div style="height: 300px; overflow: scroll;">
+<<<<<<< HEAD
+											<table class="table" id="tabelaresultadosviw">
+=======
 											<table class="table" id="tabelaresultadosview">
+>>>>>>> dev
 												<thead>
 													<tr>
 														<th scope="col">ID</th>
@@ -105,9 +116,15 @@
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
 															<td><c:out value="${ml.nome}"></c:out></td>
+<<<<<<< HEAD
+															<td><a class="btn btn-success" href="<%=request.getContextPath()%>/ServletLoginUsuarioControler?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+														</tr>
+													</c:forEach>														
+=======
 															<td><a class="btn btn-success" href="<%=request.getContextPath() %>/ServletLoginUsuarioControler?acao=buscarEditar&id=${ml.id}">Ver</a></td>
 														</tr>
 													</c:forEach>
+>>>>>>> dev
 												</tbody>
 											</table>
 										</div>
@@ -169,6 +186,13 @@
 
 	<script type="text/javascript">
 	
+		function verEditar(id) {
+			var urlAction = document.getElementById('formUser').action;
+			// Redirecionamento de pagina com Java Script
+			window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+		}
+	
+	
 		function buscarUsuario() {
 			var nomeBusca = document.getElementById('nomeBusca').value;
 			// Validando que tem que ter valor pra bucar no banco.
@@ -186,10 +210,10 @@
 						console.log(json);
 						
 						$('#tabelaresultados > tbody > tr').remove();
-
+	
 						for(var p = 0; p < json.length; p++) {
 							$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+
-								json[p].nome+'</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');
+								json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+');" type="button" class="btn btn-info">Ver</button></td></tr>');
 						}
 						
 						document.getElementById('totalResultado').textContent = 'resultados: ' + json.length;
