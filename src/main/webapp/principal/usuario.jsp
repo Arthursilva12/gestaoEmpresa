@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
+<<<<<<< HEAD
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+=======
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+>>>>>>> dev
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +99,11 @@
 										<span id="msg">${msg}</span>
 										
 										<div style="height: 300px; overflow: scroll;">
+<<<<<<< HEAD
 											<table class="table" id="tabelaresultadosviw">
+=======
+											<table class="table" id="tabelaresultadosview">
+>>>>>>> dev
 												<thead>
 													<tr>
 														<th scope="col">ID</th>
@@ -108,16 +116,23 @@
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
 															<td><c:out value="${ml.nome}"></c:out></td>
+<<<<<<< HEAD
 															<td><a class="btn btn-success" href="<%=request.getContextPath()%>/ServletLoginUsuarioControler?acao=buscarEditar&id=${ml.id}">Ver</a></td>
 														</tr>
 													</c:forEach>														
+=======
+															<td><a class="btn btn-success" href="<%=request.getContextPath() %>/ServletLoginUsuarioControler?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+														</tr>
+													</c:forEach>
+>>>>>>> dev
 												</tbody>
 											</table>
 										</div>
 									</div>
-									<!-- Page-body end -->
 								</div>
-								<div id="styleSelector"></div>
+									<!-- Page-body end -->
+							</div>
+							<div id="styleSelector"></div>
 							</div>
 						</div>
 					</div>

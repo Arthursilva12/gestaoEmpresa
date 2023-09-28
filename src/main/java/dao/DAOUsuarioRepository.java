@@ -62,7 +62,6 @@ public class DAOUsuarioRepository {
 			modelLogin.setNome(resultado.getString("nome"));
 			modelLogin.setEmail(resultado.getString("email"));
 			modelLogin.setLogin(resultado.getString("login"));
-//			modelLogin.setSenha(resultado.getString("senha"));
 			
 			retorno.add(modelLogin);
 		}
@@ -70,10 +69,36 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 	
+	public List<ModelLogin> consultaUsuarioList() throws Exception {
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "select * from model_login";
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		ResultSet resultado = statement.executeQuery();
+
+		while (resultado.next()) { /* percorrer as linhas de resultado do SQL */
+
+			ModelLogin modelLogin = new ModelLogin();
+
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setNome(resultado.getString("nome"));
+
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public List<ModelLogin> consultaUsuarioList() throws Exception {
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+=======
+	public ModelLogin consultaUsuarioList(String login) throws Exception {
+>>>>>>> dev
 
 		String sql = "select * from model_login ";
 		PreparedStatement statement = connection.prepareStatement(sql);

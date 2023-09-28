@@ -34,10 +34,17 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 
 				daoUsuarioRepository.deletarUser(idUSer);
 				
+<<<<<<< HEAD
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
 				 request.setAttribute("modelLogins", modelLogins);
 				
 				request.setAttribute("msg", "Usuario excluido com sucesso!");
+=======
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				request.setAttribute("modelLogins", modelLogins);
+				
+				request.setAttribute("msg", "Usuario excluido!");
+>>>>>>> dev
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			} 
 			
@@ -48,9 +55,18 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 				
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
 				String idUSer = request.getParameter("id");
+<<<<<<< HEAD
 
 				daoUsuarioRepository.deletarUser(idUSer);
 
+=======
+				
+				 daoUsuarioRepository.deletarUser(idUSer);
+				 
+				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				 request.setAttribute("modelLogins", modelLogins);
+				 
+>>>>>>> dev
 				response.getWriter().write("Excluido com sucesso");
 			}
 			
@@ -67,6 +83,7 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
 			    
 				 response.getWriter().write(json);
+<<<<<<< HEAD
 			} 
 			
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
@@ -79,6 +96,19 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 				
 				request.setAttribute("msg", "Usuario em edição");
 				request.setAttribute("modelLogin", modelLogin);// Retorna os valores para tela
+=======
+			}
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				 
+				 request.setAttribute("msg", "Usuários carregados");
+			     request.setAttribute("modelLogins", modelLogins);
+				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				 
+			 }else {
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				request.setAttribute("modelLogins", modelLogins);
+>>>>>>> dev
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			
