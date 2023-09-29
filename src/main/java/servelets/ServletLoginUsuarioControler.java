@@ -24,6 +24,8 @@ public class ServletLoginUsuarioControler extends HttpServlet {
     // doGet geralmente é usado para deletar e consultar.
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		System.out.println("Bruno feio!! :)");
+		
 		try {
 			String acao = request.getParameter("acao");
 			
