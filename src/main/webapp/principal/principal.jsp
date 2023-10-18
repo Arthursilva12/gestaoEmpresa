@@ -20,7 +20,7 @@
 			<!-- Barra de navegação abaixo da foto -->
 			<jsp:include page="navbar.jsp"></jsp:include>
 
-			<div class="pcoded-main-container">0
+			<div class="pcoded-main-container">
 				<div class="pcoded-wrapper">
 
 					<!-- menu de navegação abaixo da foto -->
@@ -33,15 +33,12 @@
 						<!-- Page-header end -->
 						<div class="pcoded-inner-content">
 							<!-- Main-body start -->
-							<div class="main-body">s
+							<div class="main-body">
 								<div class="page-wrapper">
 									<!-- Page-body start -->
 									<div class="page-body">
 										<div class="row">
 											<h1>Paginas do sistema em desevolvimento!</h1>
-											
-											<p> Esse é o meu primeiro documento em HTMLl!!
-											e eu estou muito feliz com isso</p>
 										</div>
 									</div>
 									<!-- Page-body end -->
