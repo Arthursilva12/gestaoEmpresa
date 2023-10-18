@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			<a href="index.html"> <img class="img-fluid"
-				src="<%= request.getContextPath() %>/assets/images/logo.png" alt="Theme-Logo" />
+				src="<%=request.getContextPath()%>/assets/images/logo.png" alt="Theme-Logo" />
 			</a> <a class="mobile-options waves-effect waves-light"> <i
 				class="ti-more"></i>
 			</a>
@@ -60,12 +60,11 @@
 						<li class="waves-effect waves-light">
 							<div class="media">
 								<img class="d-flex align-self-center img-radius"
-									src="<%= request.getContextPath() %>/assets/images/avatar-2.jpg"
-									alt="Generic placeholder image">
+									 src="<%=request.getContextPath()%>/assets/images/avatar-2.jpg"
+									 alt="Generic placeholder image">
 								<div class="media-body">
 									<h5 class="notification-user"><%= session.getAttribute("usuario") %> Doe</h5>
-									<p class="notification-msg">Lorem ipsum dolor sit amet,
-										consectetuer elit.</p>
+									<p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
 									<span class="notification-time">30 minutes ago</span>
 								</div>
 							</div>

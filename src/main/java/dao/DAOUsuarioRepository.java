@@ -69,6 +69,7 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 	
+	
 	public List<ModelLogin> consultaUsuarioList() throws Exception {
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
@@ -81,16 +82,17 @@ public class DAOUsuarioRepository {
 
 			ModelLogin modelLogin = new ModelLogin();
 
-			modelLogin.setEmail(resultado.getString("email"));
 			modelLogin.setId(resultado.getLong("id"));
-			modelLogin.setLogin(resultado.getString("login"));
 			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setLogin(resultado.getString("login"));
 
 			retorno.add(modelLogin);
 		}
 
 		return retorno;
 	}
+	
 	
 	public ModelLogin consultaUsuarioList(String login) throws Exception {
 
@@ -108,9 +110,32 @@ public class DAOUsuarioRepository {
 			modelLogin.setEmail(resultado.getString("email"));
 			modelLogin.setLogin(resultado.getString("login"));
 			modelLogin.setSenha(resultado.getString("senha"));
-
 		}
 
+		return modelLogin;
+	}
+	
+	
+	public ModelLogin consultaUsuarioID(String id) throws Exception  {
+		
+		ModelLogin modelLogin = new ModelLogin();
+		
+		String sql = "select * from model_login where id = ? ";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, Long.parseLong(id));
+		
+		ResultSet resultado = statement.executeQuery();
+		
+		while (resultado.next()) {
+			
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setSenha(resultado.getString("senha"));
+			modelLogin.setLogin(resultado.getString("login"));
+		}
+		
 		return modelLogin;
 	}
 	
@@ -141,6 +166,4 @@ public class DAOUsuarioRepository {
 		connection.commit();
 	}
 	
-	
-
 }
