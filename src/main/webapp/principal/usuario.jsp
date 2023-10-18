@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
 
-														<form class="form-material" action="<%= request.getContextPath()%>/ServletLoginUsuarioControler" method="post" id="formUser">
+														<form class="form-material" action="<%=request.getContextPath()%>/ServletLoginUsuarioController" method="post" id="formUser">
 															<input type="hidden" name="acao" id="acao" value="">
 														
                                                             <div class="form-group form-default form-static-label">
@@ -105,7 +105,7 @@
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
 															<td><c:out value="${ml.nome}"></c:out></td>
-															<td><a class="btn btn-success" href="<%=request.getContextPath() %>/ServletLoginUsuarioControler?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+															<td><a class="btn btn-success" href="<%=request.getContextPath()%>/ServletLoginUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
 														</tr>
 													</c:forEach>
 												</tbody>
@@ -169,35 +169,40 @@
 
 	<script type="text/javascript">
 	
-		function buscarUsuario() {
-			var nomeBusca = document.getElementById('nomeBusca').value;
-			// Validando que tem que ter valor pra bucar no banco.
-			if(nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {
-				
-				var urlAction = document.getElementById('formUser').action;
-				
-				$.ajax({
-					method: "get", 
-					url : urlAction,
-					data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
-					success: function (response) {
-						// converte um valor para uma notação JSON
-						var json = JSON.parse(response);
-						console.log(json);
-						
-						$('#tabelaresultados > tbody > tr').remove();
+		function verEditar(id) {
+	    	var urlAction = document.getElementById('formUser').action;
+	    
+	    	window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+		}
 
+
+		function buscarUsuario() {
+	    	var nomeBusca = document.getElementById('nomeBusca').value;
+	    
+	    	if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*Validando que tem que ter valor pra buscar no banco*/
+		
+			 	var urlAction = document.getElementById('formUser').action;
+			
+				$.ajax({
+			    	method: "get",
+			     	url : urlAction,
+			     	data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
+			     	success: function (response) {
+						var json = JSON.parse(response);
+					 
+						$('#tabelaresultados > tbody > tr').remove();
+					 
 						for(var p = 0; p < json.length; p++) {
-							$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+
-								json[p].nome+'</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');
+						 	$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td> '+
+						 		json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+');" type="button" class="btn btn-info">Ver</button></td></tr>');
 						}
 						
-						document.getElementById('totalResultado').textContent = 'resultados: ' + json.length;
-					}
-					
-				}).fail(function(xhr, status, errorThrown){
-					alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
-				});
+					  	document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
+			     	}
+			     
+			 	}).fail(function(xhr, status, errorThrown) {
+			   		alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+			 	});
 			}
 		}
 	

@@ -8,23 +8,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
-public class ServletLoginUsuarioControler extends HttpServlet {
+@WebServlet(urlPatterns =  {"/ServletLoginUsuarioController"})
+ public class ServletLoginUsuarioController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 	
-    public ServletLoginUsuarioControler() {
+    public ServletLoginUsuarioController() {
     }
 
     // doGet geralmente é usado para deletar e consultar.
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("Bruno feio!! :)");
 		
 		try {
 			String acao = request.getParameter("acao");
@@ -45,24 +45,36 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 				
 				String idUSer = request.getParameter("id");
 				
-				 daoUsuarioRepository.deletarUser(idUSer);
+				daoUsuarioRepository.deletarUser(idUSer);
 				 
-				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
-				 request.setAttribute("modelLogins", modelLogins);
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				request.setAttribute("modelLogins", modelLogins);
 				 
 				response.getWriter().write("Excluido com sucesso");
 			}
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 					
 				String nomeBusca = request.getParameter("nomeBusca");
-				System.out.println(nomeBusca);
 				
 				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultarUserAjax(nomeBusca);
 					
 				ObjectMapper mapper = new ObjectMapper();
 			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
 			    
-				 response.getWriter().write(json);
+				response.getWriter().write(json);
+			} 
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+				
+				String id = request.getParameter("id");
+				 
+			    ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id);
+			 
+			    List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+			    request.setAttribute("modelLogins", modelLogins);
+			     
+			    request.setAttribute("msg", "Usuário em edição");
+				request.setAttribute("modelLogin", modelLogin);
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
@@ -126,6 +138,7 @@ public class ServletLoginUsuarioControler extends HttpServlet {
 			
 			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
 			request.setAttribute("modelLogins", modelLogins);
+			
 			request.setAttribute("msg", msg);
 			request.setAttribute("modelLogin", modelLogin);// Retorna os valores para tela
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
