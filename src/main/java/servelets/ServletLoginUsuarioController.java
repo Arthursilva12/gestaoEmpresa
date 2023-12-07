@@ -3,27 +3,35 @@ package servelets;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.compress.utils.IOUtils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.ModelLogin;
 
+@MultipartConfig()// prepara a servlet para o upload da foto do usu·rio
 @WebServlet(urlPatterns =  {"/ServletLoginUsuarioController"})
- public class ServletLoginUsuarioController extends HttpServlet {
+ public class ServletLoginUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
        
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
+
 	
+//	private Object ServletFileUpload;
+
     public ServletLoginUsuarioController() {
     }
 
-    // doGet geralmente √© usado para deletar e consultar.
+    // doGet geralmente È usado para deletar e consultar.
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
@@ -35,7 +43,7 @@ import model.ModelLogin;
 				
 				daoUsuarioRepository.deletarUser(idUSer);
 				
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 				
 				request.setAttribute("msg", "Usuario excluido!");
@@ -47,7 +55,7 @@ import model.ModelLogin;
 				
 				daoUsuarioRepository.deletarUser(idUSer);
 				 
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 				 
 				response.getWriter().write("Excluido com sucesso");
@@ -56,7 +64,7 @@ import model.ModelLogin;
 					
 				String nomeBusca = request.getParameter("nomeBusca");
 				
-				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultarUserAjax(nomeBusca);
+				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
 					
 				ObjectMapper mapper = new ObjectMapper();
 			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
@@ -67,24 +75,24 @@ import model.ModelLogin;
 				
 				String id = request.getParameter("id");
 				 
-			    ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id);
+			    ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id, super.getUserLogado(request));
 			 
-			    List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+			    List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 			    request.setAttribute("modelLogins", modelLogins);
 			     
-			    request.setAttribute("msg", "Usu√°rio em edi√ß√£o");
+			    request.setAttribute("msg", "Usu·rio em ediÁ„o!");
 				request.setAttribute("modelLogin", modelLogin);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
-				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				 
-				 request.setAttribute("msg", "Usu√°rios carregados");
+				 request.setAttribute("msg", "Usu·rios carregados");
 			     request.setAttribute("modelLogins", modelLogins);
 				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 
 			 }else {
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
@@ -98,18 +106,19 @@ import model.ModelLogin;
 	}
 
 	
-	// doPost geralmente √© usado para salvar(gravar) e atualizar
+	// doPost geralmente s„o usado para salvar(gravar) e atualizar
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			
-			String msg = "Opera√ß√£o realizada com sucesso!";
+			String msg = "OperaÁ„o realizada com sucesso!";
 			 
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
+			String perfil = request.getParameter("perfil");
+			String sexo = request.getParameter("sexo");
 			
 			ModelLogin modelLogin = new ModelLogin(); 
 			
@@ -119,13 +128,29 @@ import model.ModelLogin;
 			modelLogin.setEmail(email);
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
+			modelLogin.setPerfil(perfil);
+			modelLogin.setSexo(sexo);
 			
-			// Se usuario existe(true) e o Id for dirente de nulo(true), √© jogado uma mensagem.
-			// mas se o usuario n√£o existe(false) e o ID for diferente de nulo(true), usuario √© cadastrado.
+			
+			if(org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload.isMultipartContent(request)) {
+				
+				Part part = request.getPart("fileFoto");
+				// VerificaÁ„o se conte foto
+				if(part.getSize() > 0) {
+					byte[] foto = IOUtils.toByteArray(part.getInputStream());// Converte a imagem para byte.
+					String imgBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + Base64.encodeBase64String(foto);
+					
+	 				modelLogin.setFotouser(imgBase64);
+					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);// Extens„o da imagem.
+				}
+			}
+			
+			// Se usuario existe(true) e o Id for dirente de nulo(true), È jogado uma mensagem.
+			// mas se o usuario n„o existe(false) e o ID for diferente de nulo(true), usuario √© cadastrado.
 			// Se o ID for nulo, ira gravar o usuario, caso contrario manda a mensagem.
-			// Se o ID for diferente de nulo e diferente de vazio e porque le j√° existe.
+			// Se o ID for diferente de nulo e diferente de vazio e porque j·° existe.
 			if(daoUsuarioRepository.validarLogin(modelLogin) && modelLogin.getId() == null) {
-				msg = "J√° existe usuario com o mesmo login, informe outro login!";
+				msg = "J· existe usuario com o mesmo login, informe outro login!";
 			}else {
 				if(modelLogin.isNovo()) {
 					msg = "Gravado com sucesso!";
@@ -133,10 +158,10 @@ import model.ModelLogin;
 					msg = "Atualizado com sucesso!";
 				}
 				
-				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
+				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin, super.getUserLogado(request));
 			}
 			
-			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 			request.setAttribute("modelLogins", modelLogins);
 			
 			request.setAttribute("msg", msg);
