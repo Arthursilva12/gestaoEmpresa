@@ -64,13 +64,16 @@
                                                             <!-- Campo de imagem do usuário -->
                                                             <div class="form-group form-default input-group mb-4">
 																<div class="input-group-prepend">
-																	<c:if test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
-																		<img alt="Imagem User" id="fotobase64" src="${modelLogin.fotouser}" width="70px">
-																	</c:if>
-																	
-																	<c:if test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}">
-																		<img alt="Imagem User" id="fotobase64" src="assets\images\user2.png" width="70px">
-																	</c:if>
+																	    <c:if test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
+																	    	<a href="<%= request.getContextPath()%>/ServletLoginUsuarioController?acao=downloadFoto&id=${modelLogin.id}">
+																		    	<!-- Um componente "href" ele sempre dispara um get -->
+																				<img alt="Imagem User" id="fotobase64" src="${modelLogin.fotouser}" width="70px">
+																			</a>
+																		</c:if>
+																		
+																		<c:if test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}">
+																			<img alt="Imagem User" id="fotobase64" src="assets\images\user2.png" width="70px">
+																		</c:if>
 																</div>
 																<input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotobase64', 'fileFoto');" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
 															</div>

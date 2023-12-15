@@ -189,7 +189,6 @@ public class DAOUsuarioRepository {
 	
 	
 	public ModelLogin consultaUsuarioID(String id, Long userLogado) throws Exception  {
-		
 		ModelLogin modelLogin = new ModelLogin();
 		
 		String sql = "select * from model_login where id = ? and useradmin is false and usuario_id = ?";
@@ -198,18 +197,19 @@ public class DAOUsuarioRepository {
 		statement.setLong(1, Long.parseLong(id));
 		statement.setLong(2, userLogado);
 		
-		ResultSet resultado = statement.executeQuery();
+		ResultSet resutlado =  statement.executeQuery();
 		
-		while (resultado.next()) {
+		while (resutlado.next()) /*Se tem resultado*/ {
 			
-			modelLogin.setId(resultado.getLong("id"));
-			modelLogin.setNome(resultado.getString("nome"));
-			modelLogin.setEmail(resultado.getString("email"));
-			modelLogin.setSenha(resultado.getString("senha"));
-			modelLogin.setLogin(resultado.getString("login"));
-			modelLogin.setPerfil(resultado.getString("perfil"));
-			modelLogin.setSexo(resultado.getString("sexo"));
-			modelLogin.setFotouser(resultado.getString("fotouser"));
+			modelLogin.setId(resutlado.getLong("id"));
+			modelLogin.setEmail(resutlado.getString("email"));
+			modelLogin.setLogin(resutlado.getString("login"));
+			modelLogin.setSenha(resutlado.getString("senha"));
+			modelLogin.setNome(resutlado.getString("nome"));
+			modelLogin.setPerfil(resutlado.getString("perfil"));
+			modelLogin.setSexo(resutlado.getString("sexo"));
+			modelLogin.setFotouser(resutlado.getString("fotouser"));
+			modelLogin.setExtensaofotouser(resutlado.getString("extensaofotouser"));
 		}
 		
 		return modelLogin;
@@ -219,7 +219,7 @@ public class DAOUsuarioRepository {
 	public boolean validarLogin(ModelLogin login) throws Exception {
 		
 		/*O count ele retorna os registro dentro de uma determinada coluna
-		 * Aqui ele está fazendo uma verificação vendo se contem um usuario dentro da coluna
+		 * Aqui ele estï¿½ fazendo uma verificaï¿½ï¿½o vendo se contem um usuario dentro da coluna
 		 * O maior que zero e para retorna um TRUE ou FALSE inves do ID*/
 		String sql = "select count(1) > 0 as existe from model_login where upper(login) = upper('"+login.getLogin()+"');";
 
