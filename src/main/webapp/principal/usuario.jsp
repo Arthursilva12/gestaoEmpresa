@@ -1,5 +1,5 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -10,31 +10,22 @@
 <jsp:include page="head.jsp"></jsp:include>
 
 <body>
-	<div>
-		
-	</div>
-
 	<!-- Pre-loader start -->
 	<jsp:include page="theme-loader.jsp"></jsp:include>
-
 	<!-- Pre-loader end -->
 	<div id="pcoded" class="pcoded">
 		<div class="pcoded-overlay-box"></div>
 		<div class="pcoded-container navbar-wrapper">
-
 			<!-- Barra de navegação abaixo da foto -->
 			<jsp:include page="navbar.jsp"></jsp:include>
-
 			<div class="pcoded-main-container">
 				<div class="pcoded-wrapper">
-
 					<!-- menu de navegação abaixo da foto -->
 					<jsp:include page="navbarmainmenu.jsp"></jsp:include>
 
 					<div class="pcoded-content">
 						<!-- Page-header start/ onde está a estrutura -->
 						<jsp:include page="pag-hedar.jsp"></jsp:include>
-
 						<!-- Page-header end -->
 						<div class="pcoded-inner-content">
 							<!-- Main-body start -->
@@ -42,14 +33,12 @@
 								<div class="page-wrapper">
 									<!-- Page-body start -->
 									<div class="page-body">
-
 										<div class="row">
 											<div class="col-sm-12">
 												<!-- Basic Form Inputs card start -->
 												<div class="card">
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
-
 														<!-- enctype="multipart/form-data" ele prepara o formulario para o upload da foto -->
 														<!-- enctype="multipart/form-data" ele também define o tipo de dados que vai vim do formulario -->
 														<form class="form-material" enctype="multipart/form-data" action="<%=request.getContextPath()%>/ServletLoginUsuarioController" method="post" id="formUser">
@@ -126,11 +115,49 @@
 																<span class="form-bar"></span>
 																<label class="float-label">Perfil:</label>
 															</div>
+															
+															<div class="form-group form-default form-static-label">
+                                                                <input onblur="pesquisaCep();" type="text" name="cep" id="cep" class="form-control" required="" autocomplete="off" value="${modelLogin.cep}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cep </label>
+                                                            </div>
+                                                            
+															<div class="form-group form-default form-static-label">
+                                                                <input type="text" name="logradouro" id="logradouro" class="form-control" required="" autocomplete="off" value="${modelLogin.logradouro}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Logradouro </label>
+                                                            </div>
+                                                            
+															<div class="form-group form-default form-static-label">
+                                                                <input type="text" name="bairro" id="bairro" class="form-control" required="" autocomplete="off" value="${modelLogin.bairro}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Bairro </label>
+                                                            </div>
+                                                            
+															<div class="form-group form-default form-static-label">
+                                                                <input type="text" name="localidade" id="localidade" class="form-control" required="" autocomplete="off" value="${modelLogin.localidade}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Localidade </label>
+                                                            </div>
+                                                            
+															<div class="form-group form-default form-static-label">
+                                                                <input type="text" name="uf" id="uf" class="form-control" required="" autocomplete="off" value="${modelLogin.uf}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Estado </label>
+                                                            </div>
+                                                            
+															<div class="form-group form-default form-static-label">
+                                                                <input type="text" name="numero" id="numero" class="form-control" required="" autocomplete="off" value="${modelLogin.numero}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Número </label>
+                                                            </div>
+															
 															<div class="form-group form-default form-static-label">
                                                                 <input type="text" name="login" id="login" class="form-control" required="" autocomplete="off" value="${modelLogin.login}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Login </label>
                                                             </div>
+                                                            
                                                             <div class="form-group form-default form-static-label">
                                                                 <input type="password" name="senha" id="senha" class="form-control" required="" autocomplete="off"value="${modelLogin.senha}">
                                                                 <span class="form-bar"></span>
@@ -256,12 +283,28 @@
 
 	<script type="text/javascript">
 	
+		function  pesquisaCep() {
+			var cep = $("#cep").val();
+			
+			$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+				
+				if (!("erro" in dados)) {
+                    //Atualiza os campos com os valores da consulta.
+                    $("#cep").val(dados.logradouro);
+                    $("#logradouro").val(dados.logradouro);
+                    $("#bairro").val(dados.bairro);
+                    $("#localidade").val(dados.localidade);
+                    $("#uf").val(dados.uf);
+			})
+		}
+	
 		function visualizarImg(fotobase64, fileFoto) {
 			
 			var preview = document.getElementById(fotobase64);// Campo IMG html
 			var fileUser = document.getElementById(fileFoto).files[0];
 			var reader = new FileReader();
-			
+			//reader serve para ler arquivo de texto.
+			//onload é usado para executar uma função JavaScript imediatamente após o carregamento de uma página.
 			reader.onloadend = function() {
 				preview.src = reader.result;// Carrega a foto na tela  
 			};
