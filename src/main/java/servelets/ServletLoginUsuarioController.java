@@ -64,14 +64,28 @@ import model.ModelLogin;
 			}
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 					
-				String nomeBusca = request.getParameter("nomeBusca");
+				 String nomeBusca = request.getParameter("nomeBusca");
+				 
+				 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
+				 
+				 ObjectMapper mapper = new ObjectMapper();
+				 String json = mapper.writeValueAsString(dadosJsonUser);
+				 
+				 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+				 response.getWriter().write(json);
+			} 
+			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
 				
-				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
-					
-				ObjectMapper mapper = new ObjectMapper();
-			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
-			    
-				response.getWriter().write(json);
+				 String nomeBusca = request.getParameter("nomeBusca");
+				 String pagina = request.getParameter("pagina");
+				 
+				 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioListOffset(nomeBusca, super.getUserLogado(request), pagina);
+				 
+				 ObjectMapper mapper = new ObjectMapper();
+				 String json = mapper.writeValueAsString(dadosJsonUser);
+				 
+				 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+				 response.getWriter().write(json);
 			} 
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
 				
@@ -106,8 +120,17 @@ import model.ModelLogin;
 					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
 					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
 				}
+			}
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
+				Integer offset = Integer.parseInt(request.getParameter("pagina"));
+				 
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioListPaginada(this.getUserLogado(request), offset);
+				 
+				request.setAttribute("modelLogins", modelLogins);
+			    request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			 }else {
 				
-			}else {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
@@ -122,7 +145,6 @@ import model.ModelLogin;
 		}
 	}
 
-	
 	// doPost geralmente s�o usado para salvar(gravar) e atualizar
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

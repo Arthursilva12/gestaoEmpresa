@@ -2,9 +2,6 @@ package model;
 
 import java.io.Serializable;
 
-/*
- * O "Serializable" Ã© para as parte de compilação das classes
- */
 public class ModelLogin implements Serializable {
 
 	private static final long serialVersionUID = 1L;
