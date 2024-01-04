@@ -345,7 +345,7 @@
 		    window.location.href = urlAction + '?acao=buscarEditar&id='+id;
 		}
 		
-		
+		//Aqui chama por paginação e monta de novo a paginação chamando a função ajax de novo.
 		function buscaUserPagAjax(url){
 		    var urlAction = document.getElementById('formUser').action;
 		    var nomeBusca = document.getElementById('nomeBusca').value;
@@ -382,7 +382,7 @@
 			});
 		}
 		
-		
+		//Busca o usuário e monta a paginação com outra função ajax.
 		function buscarUsuario() {
 			var nomeBusca = document.getElementById('nomeBusca').value;
 		    
