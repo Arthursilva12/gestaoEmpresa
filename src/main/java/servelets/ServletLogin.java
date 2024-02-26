@@ -67,8 +67,10 @@ public class ServletLogin extends HttpServlet {
 					// Aqui redireciona o usuario para outra tela.
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
 					request.getSession().setAttribute("perfil", modelLogin.getPerfil());
-
-					// Se a URL for nula, vai fazer a verificaÃ§Ã£o e setar o valor. Assim vai
+					
+					request.getSession().setAttribute("imagemUser", modelLogin.getFotouser());	
+					
+					// Se a URL for nula, vai fazer a verificação e setar o valor. Assim vai
 					// continuar o fluco
 					if (url == null || url.equals("null")) {
 						url = "principal/principal.jsp";
