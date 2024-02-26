@@ -11,7 +11,7 @@ public class DAOLoginRepository {
 
 	private Connection connection;
 	
-	// Sempre que chamar essa class, j√° vai ter o conex√£o. 
+	// Sempre que chamar essa class, j· vai ter o conex„o. 
 	public  DAOLoginRepository() {
 		connection = SingleConnectionBanco.getConnection();
 	}

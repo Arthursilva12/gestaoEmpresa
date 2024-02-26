@@ -3,6 +3,10 @@ package servelets;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
@@ -13,7 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import model.ModelLogin;	
+import model.ModelLogin;
 
 @MultipartConfig()// prepara a servlet para o upload da foto do usuï¿½rio
 @WebServlet(urlPatterns =  {"/ServletLoginUsuarioController"})
@@ -22,10 +26,13 @@ import model.ModelLogin;
        
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
+	
+//	private Object ServletFileUpload;
+
     public ServletLoginUsuarioController() {
     }
 
-    // doGet geralmente é usado para deletar e consultar.
+    // doGet geralmente ï¿½ usado para deletar e consultar.
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
@@ -111,7 +118,7 @@ import model.ModelLogin;
 					//setHeader é um cabessalho. 
 					//As informações dentro do parenese  são comando para o navegador idenficar um dawnload.
 					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
-					response.getOutputStream().write(new org.apache.commons.codec.binary.Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
+					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
 				}
 			}
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
@@ -138,7 +145,7 @@ import model.ModelLogin;
 		}
 	}
 
-	// doPost geralmente são usado para salvar(gravar) e atualizar
+	// doPost geralmente sï¿½o usado para salvar(gravar) e atualizar
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
@@ -176,13 +183,14 @@ import model.ModelLogin;
 			modelLogin.setNumero(numero);
 			
 			
-			if(request.getPart("fileFoto") == null) {
+			
+			if(request.getPart("fileFoto") != null) {
 				
 				Part part = request.getPart("fileFoto");
 				// Verificação se conte foto
 				if(part.getSize() > 0) {
-					byte[] foto = org.apache.commons.compress.utils.IOUtils.toByteArray(part.getInputStream());// Converte a imagem para byte.
-					String imgBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + org.apache.commons.codec.binary.Base64.encodeBase64String(foto);
+					byte[] foto = IOUtils.toByteArray(part.getInputStream());// Converte a imagem para byte.
+					String imgBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + Base64.encodeBase64String(foto);
 					
 	 				modelLogin.setFotouser(imgBase64);
 					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);// Extensão da imagem.

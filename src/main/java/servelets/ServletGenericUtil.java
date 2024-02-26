@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-public class ServletGenericUtil extends HttpServlet implements Serializable {
+public class ServletGenericUtil extends HttpServlet implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

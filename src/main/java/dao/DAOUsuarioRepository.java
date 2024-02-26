@@ -380,7 +380,7 @@ public class DAOUsuarioRepository {
 	public boolean validarLogin(ModelLogin login) throws Exception {
 		
 		/*O count ele retorna os registro dentro de uma determinada coluna
-		 * Aqui ele estï¿½ fazendo uma verificaï¿½ï¿½o vendo se contem um usuario dentro da coluna
+		 * Aqui ele está fazendo uma verificação vendo se contem um usuario dentro da coluna
 		 * O maior que zero e para retorna um TRUE ou FALSE inves do ID*/
 		String sql = "select count(1) > 0 as existe from model_login where upper(login) = upper('"+login.getLogin()+"');";
 
