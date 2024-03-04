@@ -189,7 +189,10 @@
                                                             <button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm();">Novo</button>
                                                             <button class="btn btn-success waves-effect waves-light">Salvar</button>
 												            <button type="button" class="btn btn-danger waves-effect waves-light" onclick="criarDelete();">Excluir</button>
-												            <a href="<%= request.getContextPath()%>/ServletFones?iduser=${modelLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
+												            
+												            <c:if test="${modelLogin.id > 0}">
+												            	<a href="<%= request.getContextPath()%>/ServletFones?iduser=${modelLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
+												            </c:if>
 												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>  
 												            
 												            

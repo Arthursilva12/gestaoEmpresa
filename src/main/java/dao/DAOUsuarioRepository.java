@@ -312,33 +312,35 @@ public class DAOUsuarioRepository {
 	}
 	
 	
-	public ModelLogin consultaUsuarioID(Long id) throws Exception  {
+	public ModelLogin consultaUsuarioID(Long idUSerPai) throws Exception  {
 		ModelLogin modelLogin = new ModelLogin();
 		
 		String sql = "select * from model_login where id = ? and useradmin is false";
 		
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setLong(1, id);
+		statement.setLong(1, idUSerPai);
 		
-		ResultSet resultado =  statement.executeQuery();
+		ResultSet resutlado =  statement.executeQuery();
 		
-		while (resultado.next()) /*Se tem resultado*/ {
+		while (resutlado.next()) /*Se tem resultado*/ {
 			
-			modelLogin.setId(resultado.getLong("id"));
-			modelLogin.setEmail(resultado.getString("email"));
-			modelLogin.setLogin(resultado.getString("login"));
-			modelLogin.setSenha(resultado.getString("senha"));
-			modelLogin.setNome(resultado.getString("nome"));
-			modelLogin.setPerfil(resultado.getString("perfil"));
-			modelLogin.setSexo(resultado.getString("sexo"));
-			modelLogin.setFotouser(resultado.getString("fotouser"));
-			modelLogin.setExtensaofotouser(resultado.getString("extensaofotouser"));
-			modelLogin.setLogradouro(resultado.getString("logradouro"));
-			modelLogin.setBairro(resultado.getString("bairro"));
-			modelLogin.setLocalidade(resultado.getString("localidade"));
-			modelLogin.setUf(resultado.getString("uf"));
-			modelLogin.setUf(resultado.getString("numero"));
+			modelLogin.setId(resutlado.getLong("id"));
+			modelLogin.setEmail(resutlado.getString("email"));
+			modelLogin.setLogin(resutlado.getString("login"));
+			modelLogin.setSenha(resutlado.getString("senha"));
+			modelLogin.setNome(resutlado.getString("nome"));
+			modelLogin.setPerfil(resutlado.getString("perfil"));
+			modelLogin.setSexo(resutlado.getString("sexo"));
+			modelLogin.setFotouser(resutlado.getString("fotouser"));
+			modelLogin.setExtensaofotouser(resutlado.getString("extensaofotouser"));
+			modelLogin.setCep(resutlado.getString("cep"));
+			modelLogin.setLogradouro(resutlado.getString("logradouro"));
+			modelLogin.setBairro(resutlado.getString("bairro"));
+			modelLogin.setLocalidade(resutlado.getString("localidade"));
+			modelLogin.setUf(resutlado.getString("uf"));
+			modelLogin.setNumero(resutlado.getString("numero"));
 		}
+		
 		
 		return modelLogin;
 	}
