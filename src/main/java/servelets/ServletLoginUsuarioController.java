@@ -48,6 +48,7 @@ import model.ModelLogin;
 				request.setAttribute("modelLogins", modelLogins);
 				
 				request.setAttribute("msg", "Usuario excluido!");
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			} 
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
@@ -63,14 +64,28 @@ import model.ModelLogin;
 			}
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 					
-				String nomeBusca = request.getParameter("nomeBusca");
+				 String nomeBusca = request.getParameter("nomeBusca");
+				 
+				 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
+				 
+				 ObjectMapper mapper = new ObjectMapper();
+				 String json = mapper.writeValueAsString(dadosJsonUser);
+				 
+				 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+				 response.getWriter().write(json);
+			} 
+			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
 				
-				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
-					
-				ObjectMapper mapper = new ObjectMapper();
-			    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dadosJsonUser);
-			    
-				response.getWriter().write(json);
+				 String nomeBusca = request.getParameter("nomeBusca");
+				 String pagina = request.getParameter("pagina");
+				 
+				 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioListOffset(nomeBusca, super.getUserLogado(request), pagina);
+				 
+				 ObjectMapper mapper = new ObjectMapper();
+				 String json = mapper.writeValueAsString(dadosJsonUser);
+				 
+				 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+				 response.getWriter().write(json);
 			} 
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
 				
@@ -81,15 +96,17 @@ import model.ModelLogin;
 			    List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 			    request.setAttribute("modelLogins", modelLogins);
 			     
-			    request.setAttribute("msg", "Usuï¿½rio em ediï¿½ï¿½o!");
+			    request.setAttribute("msg", "Usuário em edição!");
 				request.setAttribute("modelLogin", modelLogin);
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				 
-				 request.setAttribute("msg", "Usuï¿½rios carregados");
+				 request.setAttribute("msg", "Usuários carregados");
 			     request.setAttribute("modelLogins", modelLogins);
+			     request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 
 			}
@@ -98,15 +115,25 @@ import model.ModelLogin;
 				 
 				ModelLogin modelLogin =  daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));//Para o navegador fazer o dawnload.
 				if(modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
-					//setHeader Ã© um cabessalho. 
-					//As informaÃ§Ãµes dentro do parenese  sÃ£o comando para o navegador idenficar um dawnload.
+					//setHeader é um cabessalho. 
+					//As informações dentro do parenese  são comando para o navegador idenficar um dawnload.
 					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
-					response.getOutputStream().write(new org.apache.tomcat.util.codec.binary.Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
+					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
 				}
+			}
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
+				Integer offset = Integer.parseInt(request.getParameter("pagina"));
+				 
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioListPaginada(this.getUserLogado(request), offset);
+				 
+				request.setAttribute("modelLogins", modelLogins);
+			    request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			 }else {
 				
-			}else {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			
@@ -118,12 +145,11 @@ import model.ModelLogin;
 		}
 	}
 
-	
 	// doPost geralmente sï¿½o usado para salvar(gravar) e atualizar
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			String msg = "Operaï¿½ï¿½o realizada com sucesso!";
+			String msg = "Operação realizada com sucesso!";
 			 
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
@@ -132,6 +158,12 @@ import model.ModelLogin;
 			String senha = request.getParameter("senha");
 			String perfil = request.getParameter("perfil");
 			String sexo = request.getParameter("sexo");
+			String cep = request.getParameter("cep");
+			String logradouro = request.getParameter("logradouro");
+			String localidade = request.getParameter("localidade");
+			String bairro = request.getParameter("bairro");
+			String uf = request.getParameter("uf");
+			String numero = request.getParameter("numero");
 			
 			ModelLogin modelLogin = new ModelLogin(); 
 			
@@ -143,18 +175,25 @@ import model.ModelLogin;
 			modelLogin.setSenha(senha);
 			modelLogin.setPerfil(perfil);
 			modelLogin.setSexo(sexo);
+			modelLogin.setCep(cep);
+			modelLogin.setLogradouro(logradouro);
+			modelLogin.setLocalidade(localidade);
+			modelLogin.setBairro(bairro);
+			modelLogin.setUf(uf);
+			modelLogin.setNumero(numero);
 			
 			
-			if(org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload.isMultipartContent(request)) {
+			
+			if(request.getPart("fileFoto") != null) {
 				
 				Part part = request.getPart("fileFoto");
-				// Verificaï¿½ï¿½o se conte foto
+				// Verificação se conte foto
 				if(part.getSize() > 0) {
 					byte[] foto = IOUtils.toByteArray(part.getInputStream());// Converte a imagem para byte.
 					String imgBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + Base64.encodeBase64String(foto);
 					
 	 				modelLogin.setFotouser(imgBase64);
-					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);// Extensï¿½o da imagem.
+					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);// Extensão da imagem.
 				}
 			}
 			
@@ -179,6 +218,7 @@ import model.ModelLogin;
 			
 			request.setAttribute("msg", msg);
 			request.setAttribute("modelLogin", modelLogin);// Retorna os valores para tela
+			request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			
 		}catch (Exception e) {

@@ -8,15 +8,15 @@ import connection.SingleConnectionBanco;
 import model.ModelLogin;
 
 public class DAOLoginRepository {
-
+  
 	private Connection connection;
 	
-	// Sempre que chamar essa class, j√° vai ter o conex√£o. 
+	// Sempre que chamar essa class, j· vai ter o conex„o. 
 	public  DAOLoginRepository() {
 		connection = SingleConnectionBanco.getConnection();
 	}
 	
-	// Metodo de valida√ß√£o de login
+	// Metodo de validaÁ„o de login
 	public boolean validarAutenticacao(ModelLogin modelLogin) throws Exception {
 		
 		String sqlConsulta = "Select * from model_login where upper(login) = upper(?) and upper(senha) = upper(?)";
