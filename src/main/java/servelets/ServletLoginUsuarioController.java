@@ -1,11 +1,14 @@
 package servelets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.function.ToIntFunction;
+import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -164,6 +167,10 @@ import model.ModelLogin;
 			String bairro = request.getParameter("bairro");
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
+			String dataNascimento = request.getParameter("dataNascimento");
+			String rendamensal = request.getParameter("rendamensal");
+			
+			rendamensal = rendamensal.split("\\ ")[1].replaceAll("\\.", "").replaceAll("\\,", ".");
 			
 			ModelLogin modelLogin = new ModelLogin(); 
 			
@@ -181,8 +188,15 @@ import model.ModelLogin;
 			modelLogin.setBairro(bairro);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
+			/* A conversão começa de dentro pra fora, primeiro pega o valor da tela e converte para padrão da tela,
+			 * depois pega essa data e converte em String no padrão do banco de dados e depois converte em data de novo.*/
+			modelLogin.setDataNascimento(Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento))));
+			modelLogin.setRendamensal(Double.valueOf(rendamensal));
 			
 			
+			String text = "Aa aA aB aC Ca";
+			ToIntFunction<String> func = text::indexOf;
+			System.out.println(func.applyAsInt("a"));
 			
 			if(request.getPart("fileFoto") != null) {
 				
