@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class ModelLogin implements Serializable {
 
@@ -12,11 +13,15 @@ public class ModelLogin implements Serializable {
 	private String login;
 	private String senha;
 
+	private Date dataNascimento;
+	
 	public boolean useradmin;
 	
 	private String sexo;
 	
 	private String perfil;
+	
+	private Double rendamensal;
 	
 	private String fotouser;
 	private String extensaofotouser;
@@ -27,6 +32,23 @@ public class ModelLogin implements Serializable {
 	private String localidade;
 	private String uf;//Estádo
 	private String numero;
+	
+	
+	public Double getRendamensal() {
+		return rendamensal;
+	}
+
+	public void setRendamensal(Double rendamensal) {
+		this.rendamensal = rendamensal;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 	
 	public String getCep() {
 		return cep;
