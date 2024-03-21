@@ -132,7 +132,29 @@ import model.ModelLogin;
 				request.setAttribute("modelLogins", modelLogins);
 			    request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
-			 }else {
+			}
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUser")) {
+			
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+				
+				if(dataInicial == null || dataInicial.isEmpty()
+							&& dataFinal == null || dataFinal.isEmpty()) {
+					
+					request.setAttribute("listaUser", daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request)));
+					
+				}else  {
+					
+					request.setAttribute("listaUser", daoUsuarioRepository
+							.consultaUsuarioListRel(super.getUserLogado(request), dataInicial, dataFinal));
+					
+				}
+				
+				request.setAttribute("dataInicial", dataInicial);
+				request.setAttribute("dataFinal", dataFinal);
+				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
+				
+			}else {
 				
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
