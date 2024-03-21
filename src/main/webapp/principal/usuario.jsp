@@ -204,7 +204,6 @@
 												            </c:if>
 												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>  
 												            
-												            
 												        </form>
 
 													</div>
