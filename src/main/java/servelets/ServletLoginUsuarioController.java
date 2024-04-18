@@ -1,8 +1,10 @@
 package servelets;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
@@ -21,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import model.ModelLogin;
+import util.ReportUtil;
 
 @MultipartConfig()// prepara a servlet para o upload da foto do usu�rio
 @WebServlet(urlPatterns =  {"/ServletLoginUsuarioController"})
@@ -56,7 +59,7 @@ import model.ModelLogin;
 			} 
 			else if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
 				
-				String idUSer = request.getParameter("id");
+				String idUSer = request.getParameter("id"); 
 				
 				daoUsuarioRepository.deletarUser(idUSer);
 				 
@@ -147,14 +150,42 @@ import model.ModelLogin;
 					
 					request.setAttribute("listaUser", daoUsuarioRepository
 							.consultaUsuarioListRel(super.getUserLogado(request), dataInicial, dataFinal));
-					
 				}
 				
 				request.setAttribute("dataInicial", dataInicial);
 				request.setAttribute("dataFinal", dataFinal);
 				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
 				
-			}else {
+			} 
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
+				
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+				
+				List<ModelLogin> modelLogins = null;
+				
+				if(dataInicial == null || dataInicial.isEmpty()
+							&& dataFinal == null || dataFinal.isEmpty()) {
+					
+					modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request));
+				}else {
+					
+					modelLogins = daoUsuarioRepository
+							 .consultaUsuarioListRel(super.getUserLogado(request), dataInicial, dataFinal);
+					
+				}
+				
+				HashMap<String, Object> params = new HashMap<String, Object>();
+				params.put("PARAM_SUB_REPORT", request.getServletContext().getRealPath("relatorio") + File.separator);
+				
+				byte[] relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp", params, request.getServletContext());
+				
+				response.setHeader("Content-Disposition", "attachment;filename=arquivo.pdf");
+				response.getOutputStream().write(relatorio);
+				
+			}
+			
+			else {
 				
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
