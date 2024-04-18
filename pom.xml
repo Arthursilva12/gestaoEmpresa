@@ -26,15 +26,12 @@
 			<version>2.0.0</version>
 		</dependency>
 		
-		<!-- ======== -->
-		
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-compress</artifactId>
 		    <version>1.25.0</version>
 		</dependency> 
 
-		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 		<!-- Dependencia do Base64 -->
 		<dependency>
 		    <groupId>commons-codec</groupId>
@@ -42,12 +39,31 @@
 		    <version>1.9</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
 		    <groupId>commons-fileupload</groupId>
 		    <artifactId>commons-fileupload</artifactId>
 		    <version>1.5</version>
 		</dependency>
+
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports</artifactId>
+		    <version>6.21.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>5.2.3</version>
+		</dependency>
+
+
+		
+		<!-- 
+		<dependency>
+			<groupId>org.apache.poi</groupId>]
+		    <version>3.17</version>
+		</dependency> -->
 
 	</dependencies>
 	<build>

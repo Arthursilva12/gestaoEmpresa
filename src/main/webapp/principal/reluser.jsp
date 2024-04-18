@@ -46,30 +46,25 @@
 
 														<h4 class="sub-title">Rel. Usuário</h4>
 
-														<form class="form-material"
-															action="<%=request.getContextPath()%>/ServletLoginUsuarioController"
-															method="get" id="formUser">
+														<form class="form-material" action="<%=request.getContextPath()%>/ServletLoginUsuarioController" method="get" id="formUser">
 
-															<input type="hidden" name="acao"
-																value="imprimirRelatorioUser">
+															<input type="hidden" id="acaoRelatorioImprimirTipo" name="acao" value="imprimirRelatorioUser">
 
 															<div class="form-row align-items-center">
 																<div class="col-sm-3 my-1">
-																	<label class="sr-only" for="dataInicial">Data
-																		Inicial</label> <input value="${dataInicial}" type="text"
-																		class="form-control" id="dataInicial"
-																		name="dataInicial">
+																	<label class="sr-only" for="dataInicial">Data Inicial</label> 
+																	<input value="${dataInicial}" type="text" class="form-control" id="dataInicial" name="dataInicial">
 																</div>
 
 																<div class="col-sm-3 my-1">
-																	<label class="sr-only" for="dataFinal">Data
-																		Final</label> <input value="${dataFinal}" type="text"
-																		class="form-control" id="dataFinal" name="dataFinal">
+																	<label class="sr-only" for="dataFinal">Data Final</label> 
+																	<input value="${dataFinal}" type="text" class="form-control" id="dataFinal" name="dataFinal">
 																</div>
 
 																<div class="col-auto my-1">
-																	<button type="submit" class="btn btn-primary">Imprimir
-																		Relatório</button>
+																	<button type="button" onclick="imprimirHtml();" class="btn btn-primary">Imprimir Relatório</button>
+																	<button type="button" onclick="imprimirPdf();" class="btn btn-primary">Imprimir PDF</button>
+																	<button type="button" onclick="imprimirExcel();" class="btn btn-primary">Imprimir Excel</button>
 																</div>
 															</div>
 														</form>
@@ -119,52 +114,51 @@
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 
 	<script type="text/javascript">
+		
+		function imprimirHtml() {
+			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioUser';
+			$("#formUser").submit();
+		}
+	
+		function imprimirPdf() {
+			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
+			$("#formUser").submit();
+			return false;
+			
+		}
+		function imprimirExcel() {
+			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioExcel';
+			$("#formUser").submit();
+			return false;
+			
+		}
+		
 		$(function() {
 
-			$("#dataInicial")
-					.datepicker(
-							{
-								dateFormat : 'dd/mm/yy',
-								dayNames : [ 'Domingo', 'Segunda', 'Terça',
-										'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
-								dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S',
-										'S', 'D' ],
-								dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua',
-										'Qui', 'Sex', 'Sáb', 'Dom' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-										'Abril', 'Maio', 'Junho', 'Julho',
-										'Agosto', 'Setembro', 'Outubro',
-										'Novembro', 'Dezembro' ],
-								monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr',
-										'Mai', 'Jun', 'Jul', 'Ago', 'Set',
-										'Out', 'Nov', 'Dez' ],
-								nextText : 'Próximo',
-								prevText : 'Anterior'
-							});
+			$("#dataInicial").datepicker( {
+				dateFormat : 'dd/mm/yy',
+				dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
+				dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D' ],
+				dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom' ],
+				monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ],
+				monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+			  	nextText : 'Próximo',
+				prevText : 'Anterior'
+			});
 		});
 
 		$(function() {
 
-			$("#dataFinal")
-					.datepicker(
-							{
-								dateFormat : 'dd/mm/yy',
-								dayNames : [ 'Domingo', 'Segunda', 'Terça',
-										'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
-								dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S',
-										'S', 'D' ],
-								dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua',
-										'Qui', 'Sex', 'Sáb', 'Dom' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-										'Abril', 'Maio', 'Junho', 'Julho',
-										'Agosto', 'Setembro', 'Outubro',
-										'Novembro', 'Dezembro' ],
-								monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr',
-										'Mai', 'Jun', 'Jul', 'Ago', 'Set',
-										'Out', 'Nov', 'Dez' ],
-								nextText : 'Próximo',
-								prevText : 'Anterior'
-							});
+			$("#dataFinal").datepicker({
+				dateFormat : 'dd/mm/yy',
+				dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
+				dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D' ],
+				dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom' ],
+				monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ],
+				monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+			  	nextText : 'Próximo',
+				prevText : 'Anterior'
+			});
 		});
 	</script>
 </body>
