@@ -13,6 +13,7 @@ import org.apache.commons.compress.utils.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beandto.BeanDtoGraficoSalarioUser;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -193,6 +194,32 @@ import util.ReportUtil;
 				response.setHeader("Content-Disposition", "attachment;filename=arquivo." + extensao);
 				response.getOutputStream().write(relatorio);
 				
+			}
+			
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("graficoSalario")) {
+
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+
+					BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = daoUsuarioRepository
+							.montarGraficoMediaSalario(super.getUserLogado(request));
+
+					ObjectMapper mapper = new ObjectMapper();
+					String json = mapper.writeValueAsString(beanDtoGraficoSalarioUser);
+
+					response.getWriter().write(json);
+
+				} else {
+					BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = daoUsuarioRepository
+							.montarGraficoMediaSalario(super.getUserLogado(request), dataInicial, dataFinal);
+
+					ObjectMapper mapper = new ObjectMapper();
+					String json = mapper.writeValueAsString(beanDtoGraficoSalarioUser);
+
+					response.getWriter().write(json);
+				}
 			}
 			
 			else {

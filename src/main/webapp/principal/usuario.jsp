@@ -68,12 +68,12 @@
 															</div>
                                                             
                                                             <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modelLogin.dataNascimento}">
+                                                                <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modelLogin.nome}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Nome:</label>
                                                             </div>
                                                             <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="dataNascimento" id="dataNascimento" class="form-control" required="required" value="${modelLogin.nome}">
+                                                                <input type="text" name="dataNascimento" id="dataNascimento" class="form-control" required="required" value="${modelLogin.dataNascimento}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Dat. Nascimento:</label>
                                                             </div>
@@ -328,15 +328,15 @@
 		});
 		
 		$("#rendamensal").val(formatter.format($("#rendamensal").val));
-		
 		$("#rendamesal").focus;
 		
 		var dataNascimento = $("#dataNascimento").val();
 		
-		var dateFormat = new Date(dataNascimento);
-		
-		$("#dataNascimento").val(dateFormat.toLocaleDateString('pt_BR',{timeZone: 'UTC'}))
-		
+		if(dataNascimento != null && dataNascimento != ''){ 
+			var dateFormat = new Date(dataNascimento);
+			
+			$("#dataNascimento").val(dateFormat.toLocaleDateString('pt_BR',{timeZone: 'UTC'}))
+		}
 		$("#nome").focus();
 		
 		$( function() {
