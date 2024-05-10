@@ -300,7 +300,6 @@ import util.ReportUtil;
 					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);// Extensão da imagem.
 				}
 			}
-			
 			// Se usuario existe(true) e o Id for dirente de nulo(true), ï¿½ jogado uma mensagem.
 			// mas se o usuario nï¿½o existe(false) e o ID for diferente de nulo(true), usuario Ã© cadastrado.
 			// Se o ID for nulo, ira gravar o usuario, caso contrario manda a mensagem.
