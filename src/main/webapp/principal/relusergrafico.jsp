@@ -63,6 +63,7 @@
 
 																<div class="col-auto my-1">
 																	<button type="button" onclick="gerarGrafico();" class="btn btn-primary">Gerar Gráfico</button>
+																	<button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm();">Novo</button>
 																</div>
 															</div>
 
@@ -111,7 +112,7 @@
 					var json = JSON.parse(response);
 				    
 					myChart.destroy();
-				
+					
 				    myChart = new Chart(
 					    document.getElementById('myChart'),
 						{
@@ -145,17 +146,15 @@
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
 			$("#formUser").submit();
 			return false;
-			
 		}
+		
 		function imprimirExcel() {
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioExcel';
 			$("#formUser").submit();
 			return false;
-			
 		}
 		
 		$(function() {
-
 			$("#dataInicial").datepicker( {
 				dateFormat : 'dd/mm/yy',
 				dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
@@ -181,6 +180,14 @@
 				prevText : 'Anterior'
 			});
 		});
+		
+		function limparForm() {
+			var elementos = document.getElementById("formUser").elements;
+			
+			for(p = 0; p < elementos.length; p++) {
+				elementos[p].value = '';
+			}
+		} 
 	</script>
 </body>
 
