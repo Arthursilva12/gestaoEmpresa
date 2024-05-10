@@ -124,13 +124,12 @@
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
 			$("#formUser").submit();
 			return false;
-			
 		}
+		
 		function imprimirExcel() {
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioExcel';
 			$("#formUser").submit();
 			return false;
-			
 		}
 		
 		$(function() {
