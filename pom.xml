@@ -4,8 +4,8 @@
 	<artifactId>curso-jsp2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>curso-jsp2 jdev treinamentos</name>
-	
+	<name>gestaoEmpresa</name>
+	<!--<name>curso-jsp2 jdev treinamentos</name>-->
 	
 	<dependencies>
 		<dependency>
