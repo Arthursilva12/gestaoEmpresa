@@ -32,13 +32,10 @@ import util.ReportUtil;
        
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
-	
-//	private Object ServletFileUpload;
-
     public ServletLoginUsuarioController() {
     }
 
-    // doGet geralmente � usado para deletar e consultar.
+    // doGet geralmente usado para deletar e consultar.
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
@@ -173,7 +170,6 @@ import util.ReportUtil;
 					
 					modelLogins = daoUsuarioRepository
 							 .consultaUsuarioListRel(super.getUserLogado(request), dataInicial, dataFinal);
-					
 				}
 				
 				HashMap<String, Object> params = new HashMap<String, Object>();
