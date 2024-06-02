@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = { "/principal/*" }) // Intercepta todas as requisiÁıes que vierem do projeto ou mapeamento.
+@WebFilter(urlPatterns = { "/principal/*" }) // Intercepta todas as requisi√ß√µes que vierem do projeto ou mapeamento.
 public class FilterAutenticacao extends HttpFilter implements Filter {
 
 	private static final long serialVersionUID = 1L;
@@ -29,8 +29,8 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 
 	public FilterAutenticacao() {
 	}
-	// Encerra os processos quando o servidor È parado.
-	// Ele mataria os processos de conecÁ„o com o banco
+	// Encerra os processos quando o servidor √© parado.
+	// Ele mataria os processos de conec√ß√£o com o banco
 	public void destroy() {
 		try {
 			connection.close();
@@ -38,10 +38,10 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 			e.printStackTrace();
 		}
 	}
-	// Ele intercepta todas as requisiÁıes e as respostas do meu sistema.
+	// Ele intercepta todas as requisi√ß√µes e as respostas do meu sistema.
 	// Tudo o que fizer no sistema passara por ele.
-	// ValidaÁ„o de autenticaÁ„o.
-	// Dar commit e rolback de transaÁıes.
+	// Valida√ß√£o de autentica√ß√£o.
+	// Dar commit e rolback de transa√ß√µes.
 	// validar e fazer redirecionamento de paginas.
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -52,22 +52,22 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 
 			String usuarioLogado = (String) session.getAttribute("usuario");
 
-			String urlParaAutenticar = req.getServletPath();// Verifica a Url que est· sendo acessada
+			String urlParaAutenticar = req.getServletPath();// Verifica a Url que est√° sendo acessada
 
-			// Validar se est· logado, sen„o, ele vai redirecionara para tela de login
-			if (usuarioLogado == null && !urlParaAutenticar.equalsIgnoreCase("/principal/ServletLogin")) {// N„o est· logado
+			// Validar se est√° logado, sen√£o, ele vai redirecionara para tela de login
+			if (usuarioLogado == null && !urlParaAutenticar.equalsIgnoreCase("/principal/ServletLogin")) {// N√£o est√° logado
 
 				RequestDispatcher redireciona = request.getRequestDispatcher("/index.jsp?url=" + urlParaAutenticar);
 				request.setAttribute("msg", "Por favor realize o login!");
 				redireciona.forward(request, response);
-				return;// Para a execuÁ„o e redireciona para o login
+				return;// Para a execu√ß√£o e redireciona para o login
 
 			} else {
 				// O chain do filter deixa o processo do software continuar.
 				chain.doFilter(request, response);
 			}
 			
-			connection.commit();// Deu tudo certo, ent„o comita as alteraÁıes no banco de dados.
+			connection.commit();// Deu tudo certo, ent√£o comita as altera√ß√µes no banco de dados.
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,10 +84,10 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 			}
 		}
 	}
-	/* Ele È executado quando inicia o sistema, e iniciar todos os processos ou
+	/* Ele √© executado quando inicia o sistema, e iniciar todos os processos ou
 	 * recursos quando o servidor sobe o projeto
 	 * 
-	 * Inicia a conex„o ao banco.*/
+	 * Inicia a conex√£o ao banco.*/
 	public void init(FilterConfig fConfig) throws ServletException {
 		connection = SingleConnectionBanco.getConnection();
 		
