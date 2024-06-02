@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import javax.imageio.stream.FileImageInputStream;
-
 import connection.SingleConnectionBanco;
 import dao.DaoVersionadorbanco;
 import jakarta.servlet.Filter;
@@ -31,7 +29,6 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 
 	public FilterAutenticacao() {
 	}
-
 	// Encerra os processos quando o servidor é parado.
 	// Ele mataria os processos de conecção com o banco
 	public void destroy() {
@@ -41,7 +38,6 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 			e.printStackTrace();
 		}
 	}
-	
 	// Ele intercepta todas as requisições e as respostas do meu sistema.
 	// Tudo o que fizer no sistema passara por ele.
 	// Validação de autenticação.

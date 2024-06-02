@@ -174,7 +174,7 @@
                                                             </div>
                                                             
                                                             <div class="form-group form-default form-static-label">
-                                                            	<input type="radio" checked="checked" name="sexo" value="MASCULINO"<%
+                                                             	<input type="radio" checked="checked" name="sexo" value="MASCULINO"<%
 																		
 																	modelLogin = (ModelLogin) request.getAttribute("modelLogin");
 																	
@@ -202,8 +202,8 @@
 												            <c:if test="${modelLogin.id > 0}">
 												            	<a href="<%= request.getContextPath()%>/ServletFones?iduser=${modelLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
 												            </c:if>
-												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>  
 												            
+												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>  
 												        </form>
 
 													</div>
@@ -265,7 +265,6 @@
 	</div>
 	
 	<jsp:include page="javascriptfile.jsp"></jsp:include>	
-
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -299,8 +298,7 @@
 							</tbody>
 						</table>
 					</div>
-
-
+  
 					<nav aria-label="Page navigation example">
 						<ul class="pagination" id="ulPaginacaoUserAjax">
 
